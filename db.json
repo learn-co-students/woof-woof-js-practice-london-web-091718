@@ -3,14 +3,20 @@
     {
       "id": 1,
       "name": "Mr. Bonkers",
-      "isGoodDog": true,
-      "image": "https://weloveanimals.me/wp-content/uploads/2017/10/gettyimages-590486672-e1508512743796.jpg"
+      "isGoodDog": false,
+      "image": "https://weloveanimals.me/wp-content/uploads/2017/10/gettyimages-590486672-e1508512743796.jpg",
+      "dogBar": {},
+      "dogSummaryContainer": {},
+      "dogInfo": {}
     },
     {
       "id": 2,
       "name": "Nugget",
-      "isGoodDog": false,
-      "image": "https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg"
+      "isGoodDog": true,
+      "image": "https://www.guidedogs.org/wp-content/uploads/2018/01/Mobile.jpg",
+      "dogBar": {},
+      "dogSummaryContainer": {},
+      "dogInfo": {}
     },
     {
       "id": 3,
