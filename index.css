@@ -23,6 +23,7 @@
 }
 
 #dog-bar span {
+  
   height: 80%;
   width: 8vw;
   display: flex;
@@ -40,14 +41,28 @@
 #dog-info {
   display: flex;
   flex-flow: column;
-  align-items: center;
 }
 
 #dog-info img {
-  max-width: 75vw;
-  max-height: 25vw;
+
 }
 
 body {
   margin: 0;
+}
+
+
+
+div.polaroid {
+  align-items: center;
+
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+img {width: 100%}
+
+div.container {
+  text-align: center;
+  padding: 10px 20px;
 }
