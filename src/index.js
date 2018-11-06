@@ -1,9 +1,8 @@
-//TODO: Create event listener for filter toggle
-//TODO: Create event listener for good dog toggle
-
 // Essentials
-const localStore = []
-let filteredDogs = []
+const state = {
+  dogs: [],
+  filterGoodDogs: false
+}
 
 // CSS Elements
 const dogBar = document.querySelector("#dog-bar")
@@ -17,68 +16,49 @@ document.addEventListener("DOMContentLoaded", event =>{
 })
 
 dogFilter.addEventListener("click", event => {
-  if (dogFilter.innerHTML === "Filter good dogs: OFF"){
-    dogFilter.innerHTML = "Filter good dogs: ON"
-    filterDogs(true)
-  } else {
-    dogFilter.innerHTML = "Filter good dogs: OFF"
-    filterDogs(false)
-}})
+  state.filterGoodDogs = !state.filterGoodDogs
+  showDogsBar()
+  dogFilter.innerHTML = state.filterGoodDogs ?
+    "Filter good dogs: ON" :
+    "Filter good dogs: OFF"
+})
 
 // Functions
 
-function filterDogs(bool) {
-  if (bool === true) {
-    const temp = [...localStore]
-    filteredDogs = []
-    filteredDogs = temp.filter(doggo => doggo.isGoodDog === true)
-    showDogsBar()
-  } else {
-    filteredDogs = []
-    filteredDogs = localStore
-    showDogsBar()
-  }
-}
-
+const filteredDogs = () => state.filterGoodDogs ?
+  state.dogs.filter(dog => !dog.isGoodDog) :
+  state.dogs
 
 const getDogs = () => {
   fetch("http://localhost:3000/pups")
   .then(res => res.json())
-  .then(doggos => {
-    localStore.push(...doggos)
-    filteredDogs.push(...doggos)
-    console.log('next: show dogs bat')
-  })
+  .then(doggos => state.dogs = doggos)
   .then(() => showDogsBar())
 }
 
 function showDogsBar () {
-  console.log(filteredDogs)
-  dogBar.innerHTML = ''
-  filteredDogs.forEach(doggo => {
-    let el = document.createElement("span")
-    el.innerText = `${doggo.name}`
-    el.addEventListener("click", event => {
-      showDogInfo(doggo)
-    })
-    dogBar.appendChild(el)
-  })
+  dogBar.innerHTML = filteredDogs().map(dog => `<span class='dog-bar-item' data-id=${dog.id}>${dog.name}</span>`).join('')
 }
+
+document.addEventListener("click", event => {
+  if (event.target.className === 'dog-bar-item') {
+    showDogInfo(state.dogs.find(dog => dog.id === parseInt(event.target.dataset.id)))
+  } else if (event.target.className === 'dog-toggle') {
+    let dogger = state.dogs.find(dog => dog.id === parseInt(event.target.dataset.id))
+    showDogsBar()
+    console.log(dogger)
+    dogger.isGoodDog = !dogger.isGoodDog
+    showDogInfo(dogger)
+  }
+})
+
+
 
 function showDogInfo (doggo) {
   dogInfo.innerHTML = ""
   dogInfo.innerHTML = `
     <img src=${doggo.image} alt=${doggo.name}>
     <h3>${doggo.name}</h3>
-    <button type="button" id="dog-toggle">${doggo.isGoodDog === true ? "Bad" : "Good"} Dog!</button>
+    <button type="button" class="dog-toggle" data-id=${doggo.id}>${doggo.isGoodDog === true ? "Bad" : "Good"} Dog!</button>
   `
-  let butt = document.querySelector("#dog-toggle")
-  butt.addEventListener("click", event =>{
-    doggo.isGoodDog === true ? doggo.isGoodDog = false : doggo.isGoodDog = true
-    const dog = filteredDogs.indexOf(doggo)
-    filteredDogs.splice(dog, 1)
-    console.log(dog)
-    showDogsBar()
-    showDogInfo(doggo)
-  })
 }
